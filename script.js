@@ -39,14 +39,18 @@ class Particle {
 
 function initParticles() {
     particlesArray = [];
-    const count = Math.min((canvas.width * canvas.height) / 15000, 120);
+    const isMobile = window.innerWidth <= 768;
+    const divisor = isMobile ? 25000 : 15000;
+    const maxCount = isMobile ? 50 : 120;
+    const count = Math.min((canvas.width * canvas.height) / divisor, maxCount);
     for (let i = 0; i < count; i++) {
         particlesArray.push(new Particle());
     }
 }
 
 function connectParticles() {
-    const maxDist = 12000;
+    const isMobile = window.innerWidth <= 768;
+    const maxDist = isMobile ? 8000 : 12000;
     for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a + 1; b < particlesArray.length; b++) {
             const dx = particlesArray[a].x - particlesArray[b].x;
@@ -100,17 +104,66 @@ if (menuToggle && navLinks) {
     });
 }
 
-// ==================== SCROLL ANIMATIONS ====================
+// ==================== SCROLL ANIMATIONS (ENHANCED) ====================
 const fadeElements = document.querySelectorAll('.fade-in');
+let fadeIndex = 0;
 const fadeObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
+            // Stagger delay for sibling elements
+            const siblings = entry.target.parentElement?.querySelectorAll('.fade-in');
+            if (siblings && siblings.length > 1) {
+                const idx = Array.from(siblings).indexOf(entry.target);
+                entry.target.style.transitionDelay = `${idx * 0.08}s`;
+            }
             entry.target.classList.add('visible');
         }
     });
 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
 fadeElements.forEach(el => fadeObserver.observe(el));
+
+// ==================== SCROLL PROGRESS BAR ====================
+(function() {
+    const progressBar = document.createElement('div');
+    progressBar.className = 'scroll-progress';
+    document.body.prepend(progressBar);
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                progressBar.style.width = progress + '%';
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+})();
+
+// ==================== HERO PARALLAX ====================
+(function() {
+    const heroContent = document.querySelector('#hero .hero-content') || document.querySelector('.about-hero .hero-content');
+    if (!heroContent || window.innerWidth <= 768) return; // Skip parallax on mobile
+
+    let parallaxTicking = false;
+    window.addEventListener('scroll', () => {
+        if (!parallaxTicking) {
+            requestAnimationFrame(() => {
+                const scrollY = window.scrollY;
+                if (scrollY < window.innerHeight) {
+                    heroContent.style.transform = `translateY(${scrollY * 0.25}px)`;
+                    heroContent.style.opacity = 1 - (scrollY / (window.innerHeight * 0.8));
+                }
+                parallaxTicking = false;
+            });
+            parallaxTicking = true;
+        }
+    }, { passive: true });
+})();
 
 // ==================== COUNT-UP ANIMATION ====================
 const countElements = document.querySelectorAll('[data-count]');

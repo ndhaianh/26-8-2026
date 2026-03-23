@@ -87,6 +87,15 @@
                 </p>
             </div>
 
+            <!-- ========== BỘ SƯU TẬP ẢNH NỔI BẬT ========== -->
+            <div class="showcase-section fade-in" id="gallery-showcase">
+                <h3>📸 Bộ Sưu Tập Nổi Bật</h3>
+                <p class="showcase-desc">Những khoảnh khắc đáng nhớ nhất của tập thể lớp 12A3.</p>
+                <div class="showcase-grid" id="showcase-grid">
+                    <!-- JS sẽ render ảnh vào đây -->
+                </div>
+            </div>
+
             <!-- Thống kê nhanh -->
             <div class="stats-grid mt-3 fade-in">
                 <div class="stat-card">
@@ -118,11 +127,136 @@
         </div>
     </section>
 
+    <!-- LIGHTBOX -->
+    <div class="lightbox-overlay" id="lightbox-overlay">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Đóng">✕</button>
+        <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Ảnh trước">❮</button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+        <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Ảnh tiếp">❯</button>
+        <div class="lightbox-counter" id="lightbox-counter"></div>
+    </div>
+
     <footer>
         <p>&copy; 2026 - Lớp 12A3 K41 - THPT Số 2 An Nhơn</p>
         <div class="footer-powered">POWERED BY BỘT GIẶT A3</div>
     </footer>
 
     <script src="script.js"></script>
+    <script>
+    // 📌 BỘ SƯU TẬP NỔI BẬT - Thay placeholder bằng ảnh thật
+    // Format: { src: "assets/gallery/ten-anh.jpg", title: "Tiêu đề", tag: "Tag" }
+    const showcaseData = [
+        { title: "Ngày đầu tiên nhập học", tag: "Lớp 10", emoji: "🏫" },
+        { title: "Lễ khai giảng", tag: "Lớp 10", emoji: "🎊" },
+        { title: "Hội thao toàn trường", tag: "Lớp 11", emoji: "⚽" },
+        { title: "Cắm trại 26/3", tag: "Lớp 11", emoji: "⛺" },
+        { title: "Ngày 20/11", tag: "Lớp 12", emoji: "🌹" },
+        { title: "Chụp kỷ yếu", tag: "Lớp 12", emoji: "📷" },
+        { title: "Sinh nhật lớp", tag: "Lớp 12", emoji: "🎂" },
+        { title: "Khoảnh khắc cuối cùng", tag: "Lớp 12", emoji: "💫" },
+    ];
+
+    function renderShowcase() {
+        const grid = document.getElementById('showcase-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        showcaseData.forEach((item, i) => {
+            const el = document.createElement('div');
+            el.className = 'showcase-item fade-in';
+            el.style.animationDelay = `${i * 0.08}s`;
+            el.dataset.index = i;
+
+            const imgHTML = item.src
+                ? `<img src="${item.src}" alt="${item.title}" loading="lazy">`
+                : `<div class="showcase-placeholder">${item.emoji}<br><span>Thêm ảnh</span></div>`;
+
+            el.innerHTML = `
+                <div class="showcase-img">${imgHTML}</div>
+                <div class="showcase-overlay">
+                    <span class="showcase-tag">${item.tag}</span>
+                    <h4>${item.title}</h4>
+                </div>
+            `;
+
+            el.addEventListener('click', () => openLightbox(i));
+            grid.appendChild(el);
+        });
+
+        // Trigger fade-in observer
+        grid.querySelectorAll('.fade-in').forEach(el => {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            obs.observe(el);
+        });
+    }
+
+    // ---- LIGHTBOX ----
+    let currentLightboxIndex = 0;
+    const overlay = document.getElementById('lightbox-overlay');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbCaption = document.getElementById('lightbox-caption');
+    const lbCounter = document.getElementById('lightbox-counter');
+
+    function openLightbox(index) {
+        currentLightboxIndex = index;
+        updateLightbox();
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function updateLightbox() {
+        const item = showcaseData[currentLightboxIndex];
+        if (item.src) {
+            lbImg.src = item.src;
+            lbImg.style.display = 'block';
+        } else {
+            lbImg.src = '';
+            lbImg.style.display = 'none';
+        }
+        lbCaption.textContent = `${item.emoji} ${item.title} — ${item.tag}`;
+        lbCounter.textContent = `${currentLightboxIndex + 1} / ${showcaseData.length}`;
+    }
+
+    function nextLightbox() {
+        currentLightboxIndex = (currentLightboxIndex + 1) % showcaseData.length;
+        updateLightbox();
+    }
+
+    function prevLightbox() {
+        currentLightboxIndex = (currentLightboxIndex - 1 + showcaseData.length) % showcaseData.length;
+        updateLightbox();
+    }
+
+    document.getElementById('lightbox-close')?.addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-next')?.addEventListener('click', nextLightbox);
+    document.getElementById('lightbox-prev')?.addEventListener('click', prevLightbox);
+    overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeLightbox(); });
+    document.addEventListener('keydown', (e) => {
+        if (!overlay?.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextLightbox();
+        if (e.key === 'ArrowLeft') prevLightbox();
+    });
+
+    // Swipe support for lightbox on mobile
+    let touchStartX = 0;
+    overlay?.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+    overlay?.addEventListener('touchend', (e) => {
+        const diff = e.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(diff) > 50) { diff > 0 ? prevLightbox() : nextLightbox(); }
+    }, { passive: true });
+
+    document.addEventListener('DOMContentLoaded', renderShowcase);
+    </script>
 </body>
 </html>
