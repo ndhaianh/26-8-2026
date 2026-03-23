@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Orbitron:wght@400;700;900&display=swap');
 
 :root {
-    --bg-color: #050510;
-    --bg-secondary: #0a0a1e;
+    --bg-color: #0a0a1f;
+    --bg-secondary: #101030;
     --text-color: #e0e0ff;
     --text-muted: #a0a0c0;
     --primary-cyan: #00f3ff;
@@ -197,6 +197,99 @@ h1, h2, h3, h4, .glitch {
     text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
 }
 
+/* Dropdown Submenu */
+.nav-item-dropdown {
+    position: relative;
+}
+
+.nav-item-dropdown > a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-item-dropdown > a::after {
+    content: '▾';
+    font-size: 0.7rem;
+    transition: transform 0.3s;
+}
+
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+    background: rgba(8, 8, 25, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 8px;
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.nav-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid rgba(0, 243, 255, 0.3);
+}
+
+.nav-item-dropdown:hover .nav-dropdown,
+.nav-item-dropdown.dropdown-open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.nav-dropdown a {
+    padding: 10px 16px !important;
+    border-radius: 6px;
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.nav-dropdown a:hover {
+    background: rgba(0, 243, 255, 0.12) !important;
+}
+
+/* Auto-expand dropdown on activity pages */
+.nav-item-dropdown.on-activity-page .nav-dropdown {
+    position: static;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    min-width: auto;
+    flex-direction: row;
+    gap: 0;
+    backdrop-filter: none;
+}
+
+.nav-item-dropdown.on-activity-page .nav-dropdown::before {
+    display: none;
+}
+
+.nav-item-dropdown.on-activity-page > a::after {
+    display: none;
+}
+
 /* Mobile Menu */
 .menu-toggle {
     display: none;
@@ -225,26 +318,225 @@ h1, h2, h3, h4, .glitch {
         left: 0;
         width: 100%;
         flex-direction: column;
-        background: rgba(5, 5, 16, 0.95);
+        background: rgba(5, 5, 16, 0.97);
         backdrop-filter: blur(20px);
         border-bottom: 1px solid var(--glass-border);
-        padding: 20px;
-        gap: 5px;
-        transform: translateY(-120%);
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 15px;
+        gap: 3px;
+        display: none;
         z-index: 999;
     }
 
     .nav-links.open {
-        transform: translateY(0);
+        display: flex;
     }
 
-    .nav-links a {
+    .nav-links > li {
+        list-style: none;
+    }
+
+    .nav-links > li > a {
         display: block;
         width: 100%;
-        padding: 12px 20px;
-        font-size: 1rem;
+        padding: 14px 18px;
+        font-size: 0.95rem;
+        border-radius: 8px;
     }
+
+    .nav-links > li > a:hover,
+    .nav-links > li > a.active {
+        background: rgba(0, 243, 255, 0.08);
+    }
+
+    /* Mobile dropdown - always visible, clean accordion style */
+    .nav-item-dropdown > a {
+        border-radius: 8px 8px 0 0 !important;
+    }
+
+    .nav-dropdown {
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        background: rgba(0, 243, 255, 0.04);
+        border: none;
+        box-shadow: none;
+        min-width: auto;
+        padding: 4px 0 6px 0;
+        backdrop-filter: none;
+        border-radius: 0 0 8px 8px;
+        border-left: 2px solid rgba(0, 243, 255, 0.2);
+        margin-left: 18px;
+        margin-bottom: 4px;
+    }
+
+    .nav-dropdown::before {
+        display: none;
+    }
+
+    .nav-dropdown a {
+        padding: 10px 18px !important;
+        font-size: 0.9rem !important;
+        border-radius: 6px !important;
+    }
+
+    .nav-item-dropdown > a::after {
+        display: none;
+    }
+}
+
+/* ==================== FLOATING GROUP NAVIGATOR ==================== */
+.floating-group-nav {
+    position: fixed;
+    bottom: 30px;
+    right: 0;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: rgba(10, 10, 35, 0.92);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    overflow: hidden;
+    box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.5);
+    width: 56px;
+}
+
+.floating-nav-btn {
+    width: 100%;
+    height: 38px;
+    background: transparent;
+    border: none;
+    color: var(--primary-cyan);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+}
+
+.floating-nav-btn:hover {
+    background: rgba(0, 243, 255, 0.15);
+}
+
+.floating-nav-btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+.floating-group-nav .group-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 6px;
+    border-top: 1px solid rgba(0, 243, 255, 0.15);
+    border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+    background: rgba(0, 243, 255, 0.06);
+}
+
+.floating-group-nav .group-indicator-value {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--primary-cyan);
+    text-shadow: 0 0 12px rgba(0, 243, 255, 0.6);
+    line-height: 1;
+}
+
+.floating-group-nav .group-indicator-label {
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    font-family: var(--font-heading);
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 6px;
+    white-space: nowrap;
+}
+
+/* ==================== MUSIC TOGGLE ==================== */
+.music-toggle {
+    position: fixed;
+    bottom: 30px;
+    left: 25px;
+    z-index: 900;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(10, 10, 35, 0.9);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
+}
+
+.music-toggle:hover {
+    border-color: var(--primary-cyan);
+    box-shadow: 0 0 18px rgba(0, 243, 255, 0.2);
+}
+
+.music-toggle.playing {
+    border-color: var(--primary-cyan);
+    color: var(--primary-cyan);
+}
+
+.music-toggle .music-icon {
+    font-size: 1.1rem;
+    position: absolute;
+}
+
+.music-toggle .music-bars {
+    display: none;
+}
+
+.music-toggle.playing .music-icon {
+    display: none;
+}
+
+.music-toggle.playing .music-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 18px;
+}
+
+.music-toggle .music-bars .bar {
+    width: 3px;
+    background: var(--primary-cyan);
+    border-radius: 2px;
+    animation: musicBar 0.8s ease-in-out infinite alternate;
+}
+
+.music-toggle .music-bars .bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+.music-toggle .music-bars .bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+.music-toggle .music-bars .bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+.music-toggle .music-bars .bar:nth-child(4) { height: 14px; animation-delay: 0.45s; }
+
+@keyframes musicBar {
+    0% { height: 4px; }
+    100% { height: 18px; }
+}
+
+/* ==================== BOTTOM PAGE NAV ==================== */
+.bottom-nav-section {
+    text-align: center;
+    padding: 40px 20px 0;
+}
+
+.bottom-nav-section .cyber-btn {
+    margin: 0 10px 15px;
 }
 
 /* ==================== HERO SECTION ==================== */

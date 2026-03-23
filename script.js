@@ -340,3 +340,100 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// ==================== BACKGROUND MUSIC ====================
+(function () {
+    // 📌 HƯỚNG DẪN: Thay đường dẫn nhạc bên dưới bằng file MP3 của bạn.
+    // Đặt file nhạc vào thư mục assets/ rồi sửa đường dẫn.
+    const MUSIC_SRC = 'assets/background-music.mp3';
+
+    // Tạo phần tử audio
+    const bgMusic = document.createElement('audio');
+    bgMusic.id = 'bg-music';
+    bgMusic.loop = true;
+    bgMusic.volume = 0.3;
+    bgMusic.preload = 'auto';
+    bgMusic.src = MUSIC_SRC;
+    document.body.appendChild(bgMusic);
+
+    // Tạo nút toggle nhạc
+    const musicBtn = document.createElement('button');
+    musicBtn.id = 'music-toggle';
+    musicBtn.className = 'music-toggle';
+    musicBtn.setAttribute('aria-label', 'Toggle nhạc nền');
+    musicBtn.innerHTML = `
+        <span class="music-icon music-on">🔊</span>
+        <span class="music-icon music-off" style="display:none;">🔇</span>
+        <span class="music-bars">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </span>
+    `;
+    document.body.appendChild(musicBtn);
+
+    let isMusicPlaying = false;
+
+    // Kiểm tra trạng thái lưu trước đó
+    const savedState = localStorage.getItem('12a3-music-state');
+    const shouldPlay = savedState !== 'off'; // Mặc định = bật
+
+    function updateBtn() {
+        const onIcon = musicBtn.querySelector('.music-on');
+        const offIcon = musicBtn.querySelector('.music-off');
+        if (isMusicPlaying) {
+            onIcon.style.display = '';
+            offIcon.style.display = 'none';
+            musicBtn.classList.add('playing');
+        } else {
+            onIcon.style.display = 'none';
+            offIcon.style.display = '';
+            musicBtn.classList.remove('playing');
+        }
+    }
+
+    function playMusic() {
+        bgMusic.play().then(() => {
+            isMusicPlaying = true;
+            localStorage.setItem('12a3-music-state', 'on');
+            updateBtn();
+        }).catch(() => {
+            // Autoplay bị chặn — chờ tương tác
+        });
+    }
+
+    function pauseMusic() {
+        bgMusic.pause();
+        isMusicPlaying = false;
+        localStorage.setItem('12a3-music-state', 'off');
+        updateBtn();
+    }
+
+    function toggleMusic() {
+        if (isMusicPlaying) {
+            pauseMusic();
+        } else {
+            playMusic();
+        }
+    }
+
+    musicBtn.addEventListener('click', toggleMusic);
+
+    // Tự động phát khi trang tải (nếu trạng thái = bật)
+    if (shouldPlay) {
+        playMusic();
+
+        // Fallback: phát khi người dùng tương tác lần đầu
+        const startOnInteraction = () => {
+            if (!isMusicPlaying && shouldPlay) {
+                playMusic();
+            }
+            document.removeEventListener('click', startOnInteraction);
+            document.removeEventListener('touchstart', startOnInteraction);
+            document.removeEventListener('keydown', startOnInteraction);
+        };
+        document.addEventListener('click', startOnInteraction);
+        document.addEventListener('touchstart', startOnInteraction);
+        document.addEventListener('keydown', startOnInteraction);
+    } else {
+        updateBtn();
+    }
+})();

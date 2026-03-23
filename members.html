@@ -20,9 +20,15 @@
             <li><a href="index.html">Trang chủ</a></li>
             <li><a href="about.html">Giới thiệu</a></li>
             <li><a href="members.html" class="active">Thành viên</a></li>
-            <li><a href="grade10.html">Lớp 10</a></li>
-            <li><a href="grade11.html">Lớp 11</a></li>
-            <li><a href="grade12.html">Lớp 12</a></li>
+            <li class="nav-item-dropdown">
+                <a href="grade10.html">Hoạt động</a>
+                <div class="nav-dropdown">
+                    <a href="grade10.html">📸 Lớp 10</a>
+                    <a href="grade11.html">🎞️ Lớp 11</a>
+                    <a href="grade12.html">🎓 Lớp 12</a>
+                </div>
+            </li>
+            <li><a href="index.html#messages">Trạm tín hiệu</a></li>
         </ul>
     </nav>
 
@@ -67,7 +73,21 @@
             <h2 class="group-title">🚀 Tổ 4</h2>
             <div class="members-grid" id="members-to-4"></div>
         </div>
+
+        <div class="bottom-nav-section mt-3">
+            <a href="grade10.html" class="cyber-btn btn-pink">XEM CÁC HOẠT ĐỘNG</a>
+        </div>
     </section>
+
+    <!-- Floating Group Navigator -->
+    <div class="floating-group-nav" id="floating-group-nav">
+        <button class="floating-nav-btn" id="float-up" aria-label="Tổ trước">▲</button>
+        <div class="group-indicator">
+            <div class="group-indicator-value" id="float-current">01</div>
+            <div class="group-indicator-label">TỔ</div>
+        </div>
+        <button class="floating-nav-btn" id="float-down" aria-label="Tổ tiếp">▼</button>
+    </div>
 
     <footer>
         <p>&copy; 2026 - Lớp 12A3 K41 - THPT Số 2 An Nhơn</p>
@@ -180,24 +200,53 @@
 
     document.addEventListener('DOMContentLoaded', renderMembers);
 
-    // TOC nav active state on scroll
+    // TOC nav & Floating group nav
     const tocBtns = document.querySelectorAll('.toc-btn');
     const groupSections = document.querySelectorAll('.group-section');
+    const groupNames = ['01', '02', '03', '04'];
+    let currentGroupIdx = 0;
+
+    const floatCurrent = document.getElementById('float-current');
+    const floatUp = document.getElementById('float-up');
+    const floatDown = document.getElementById('float-down');
+
+    function updateFloatingNav(idx) {
+        currentGroupIdx = idx;
+        if (floatCurrent) floatCurrent.textContent = groupNames[idx] || 'Tổ 1';
+        if (floatUp) floatUp.disabled = idx <= 0;
+        if (floatDown) floatDown.disabled = idx >= groupSections.length - 1;
+    }
 
     if (tocBtns.length && groupSections.length) {
         const tocObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const id = entry.target.id;
+                    const idx = Array.from(groupSections).findIndex(s => s.id === id);
                     tocBtns.forEach(btn => {
                         btn.classList.toggle('active', btn.getAttribute('href') === `#${id}`);
                     });
+                    if (idx >= 0) updateFloatingNav(idx);
                 }
             });
         }, { threshold: 0.3 });
 
         groupSections.forEach(s => tocObserver.observe(s));
     }
+
+    // Floating nav buttons
+    if (floatUp) floatUp.addEventListener('click', () => {
+        if (currentGroupIdx > 0) {
+            groupSections[currentGroupIdx - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+    if (floatDown) floatDown.addEventListener('click', () => {
+        if (currentGroupIdx < groupSections.length - 1) {
+            groupSections[currentGroupIdx + 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+
+    updateFloatingNav(0);
 
     // Smooth scroll for TOC
     tocBtns.forEach(btn => {
