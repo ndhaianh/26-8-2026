@@ -143,13 +143,14 @@ countElements.forEach(el => countObserver.observe(el));
 // 2. Tạo project mới → Chọn Realtime Database → Tạo database (Test mode)
 // 3. Copy cấu hình vào đây
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "000000000000",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyBUvjuokl2Cg20xd-ypMUJLIueBzZR6uOM",
+    authDomain: "a3-website-80ecb.firebaseapp.com",
+    databaseURL: "https://a3-website-80ecb-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "a3-website-80ecb",
+    storageBucket: "a3-website-80ecb.firebasestorage.app",
+    messagingSenderId: "424519835388",
+    appId: "1:424519835388:web:8467be9bf353b9cf788179",
+    measurementId: "G-3STGJH0D6M"
 };
 
 let db = null;
