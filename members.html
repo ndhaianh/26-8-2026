@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Danh sách 45 thành viên lớp 12A3 K41 chia theo 4 Tổ.">
+    <title>Thành viên - 12A3</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo-container">
+            <div class="logo" style="display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:0.8rem;color:var(--primary-cyan);">A3</div>
+            <span class="logo-text">12A3<span class="highlight">_K41</span></span>
+        </a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="members.html" class="active">Thành viên</a></li>
+            <li><a href="grade10.html">Lớp 10</a></li>
+            <li><a href="grade11.html">Lớp 11</a></li>
+            <li><a href="grade12.html">Lớp 12</a></li>
+        </ul>
+    </nav>
+
+    <header class="section about-hero" style="min-height:60vh;">
+        <div class="hero-content">
+            <h1 class="glitch" data-text="THÀNH VIÊN">THÀNH VIÊN</h1>
+            <p class="subtitle">45 THÀNH VIÊN • 4 TỔ • 1 GIA ĐÌNH</p>
+        </div>
+    </header>
+
+    <section class="section section-compact" style="padding-top: 40px;">
+        <!-- Sub-menu chuyển nhanh giữa 4 Tổ -->
+        <div class="toc-nav" id="toc-nav">
+            <a href="#to-1" class="toc-btn active">Tổ 1</a>
+            <a href="#to-2" class="toc-btn">Tổ 2</a>
+            <a href="#to-3" class="toc-btn">Tổ 3</a>
+            <a href="#to-4" class="toc-btn">Tổ 4</a>
+        </div>
+
+        <!-- TỔ 1 -->
+        <div class="group-section" id="to-1">
+            <h2 class="group-title">⚡ Tổ 1</h2>
+            <div class="members-grid" id="members-to-1">
+                <!-- Thành viên sẽ được JS tạo hoặc bạn có thể thêm trực tiếp -->
+            </div>
+        </div>
+
+        <!-- TỔ 2 -->
+        <div class="group-section" id="to-2">
+            <h2 class="group-title">🔥 Tổ 2</h2>
+            <div class="members-grid" id="members-to-2"></div>
+        </div>
+
+        <!-- TỔ 3 -->
+        <div class="group-section" id="to-3">
+            <h2 class="group-title">💎 Tổ 3</h2>
+            <div class="members-grid" id="members-to-3"></div>
+        </div>
+
+        <!-- TỔ 4 -->
+        <div class="group-section" id="to-4">
+            <h2 class="group-title">🚀 Tổ 4</h2>
+            <div class="members-grid" id="members-to-4"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 - Lớp 12A3 K41 - THPT Số 2 An Nhơn</p>
+        <div class="footer-powered">POWERED BY BỘT GIẶT A3</div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    // ==================== DANH SÁCH THÀNH VIÊN ====================
+    // 📌 HƯỚNG DẪN: Thay tên thành viên vào mảng bên dưới.
+    // Mỗi thành viên: { name: "Tên", avatar: "đường dẫn ảnh (tùy chọn)", note: "ghi chú (tùy chọn)" }
+    // Nếu không có ảnh, sẽ hiển thị icon placeholder.
+
+    const membersData = {
+        1: [
+            { name: "Thành viên 1" },
+            { name: "Thành viên 2" },
+            { name: "Thành viên 3" },
+            { name: "Thành viên 4" },
+            { name: "Thành viên 5" },
+            { name: "Thành viên 6" },
+            { name: "Thành viên 7" },
+            { name: "Thành viên 8" },
+            { name: "Thành viên 9" },
+            { name: "Thành viên 10" },
+            { name: "Thành viên 11" },
+        ],
+        2: [
+            { name: "Thành viên 12" },
+            { name: "Thành viên 13" },
+            { name: "Thành viên 14" },
+            { name: "Thành viên 15" },
+            { name: "Thành viên 16" },
+            { name: "Thành viên 17" },
+            { name: "Thành viên 18" },
+            { name: "Thành viên 19" },
+            { name: "Thành viên 20" },
+            { name: "Thành viên 21" },
+            { name: "Thành viên 22" },
+            { name: "Thành viên 23" },
+        ],
+        3: [
+            { name: "Thành viên 24" },
+            { name: "Thành viên 25" },
+            { name: "Thành viên 26" },
+            { name: "Thành viên 27" },
+            { name: "Thành viên 28" },
+            { name: "Thành viên 29" },
+            { name: "Thành viên 30" },
+            { name: "Thành viên 31" },
+            { name: "Thành viên 32" },
+            { name: "Thành viên 33" },
+            { name: "Thành viên 34" },
+        ],
+        4: [
+            { name: "Thành viên 35" },
+            { name: "Thành viên 36" },
+            { name: "Thành viên 37" },
+            { name: "Thành viên 38" },
+            { name: "Thành viên 39" },
+            { name: "Thành viên 40" },
+            { name: "Thành viên 41" },
+            { name: "Thành viên 42" },
+            { name: "Thành viên 43" },
+            { name: "Thành viên 44" },
+            { name: "Thành viên 45" },
+        ]
+    };
+
+    // Render member cards
+    function renderMembers() {
+        let stt = 1;
+        for (const [group, members] of Object.entries(membersData)) {
+            const container = document.getElementById(`members-to-${group}`);
+            if (!container) continue;
+            container.innerHTML = '';
+            members.forEach(member => {
+                const card = document.createElement('div');
+                card.className = 'member-card fade-in';
+                
+                const avatarHTML = member.avatar
+                    ? `<img src="${member.avatar}" alt="${member.name}" class="member-avatar">`
+                    : `<span class="member-avatar-placeholder">👤</span>`;
+                
+                card.innerHTML = `
+                    <div class="member-avatar-container">
+                        ${avatarHTML}
+                    </div>
+                    <div class="member-info">
+                        <div class="member-stt">#${String(stt).padStart(2, '0')}</div>
+                        <div class="member-name">${member.name}</div>
+                        <div class="member-note">${member.note || '—'}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+                stt++;
+            });
+        }
+
+        // Re-observe for fade-in animation
+        document.querySelectorAll('.member-card.fade-in').forEach(el => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            observer.observe(el);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', renderMembers);
+
+    // TOC nav active state on scroll
+    const tocBtns = document.querySelectorAll('.toc-btn');
+    const groupSections = document.querySelectorAll('.group-section');
+
+    if (tocBtns.length && groupSections.length) {
+        const tocObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    tocBtns.forEach(btn => {
+                        btn.classList.toggle('active', btn.getAttribute('href') === `#${id}`);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        groupSections.forEach(s => tocObserver.observe(s));
+    }
+
+    // Smooth scroll for TOC
+    tocBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.querySelector(btn.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    </script>
+</body>
+</html>

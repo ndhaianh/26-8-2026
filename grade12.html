@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gallery ảnh kỷ niệm lớp 12 - 12A3 K41 THPT Số 2 An Nhơn.">
+    <title>Kỷ niệm Lớp 12 - 12A3</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo-container">
+            <div class="logo" style="display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:0.8rem;color:var(--primary-cyan);">A3</div>
+            <span class="logo-text">12A3<span class="highlight">_K41</span></span>
+        </a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="members.html">Thành viên</a></li>
+            <li><a href="grade10.html">Lớp 10</a></li>
+            <li><a href="grade11.html">Lớp 11</a></li>
+            <li><a href="grade12.html" class="active">Lớp 12</a></li>
+        </ul>
+    </nav>
+
+    <header class="section about-hero" style="min-height:50vh;">
+        <div class="hero-content">
+            <h1 class="glitch" data-text="LỚP 12">LỚP 12</h1>
+            <p class="subtitle">NĂM HỌC 2025 - 2026 • NĂM CUỐI CẤP</p>
+        </div>
+    </header>
+
+    <section class="section section-compact" style="padding-top: 20px;">
+        <div class="grade-nav">
+            <a href="grade10.html" class="toc-btn">Lớp 10</a>
+            <a href="grade11.html" class="toc-btn">Lớp 11</a>
+            <a href="grade12.html" class="toc-btn active">Lớp 12</a>
+        </div>
+
+        <h2 class="section-title">Gallery <span class="highlight">Ảnh</span></h2>
+        <p class="section-desc">Năm cuối cấp — những khoảnh khắc cuối cùng bên nhau. Thêm ảnh vào thư mục <code>assets/grade12/</code>.</p>
+
+        <div class="gallery-grid" id="gallery-grid"></div>
+
+        <div class="text-center mt-3">
+            <a href="index.html" class="cyber-btn btn-pink">⟵ VỀ TRANG CHỦ</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 - Lớp 12A3 K41 - THPT Số 2 An Nhơn</p>
+        <div class="footer-powered">POWERED BY BỘT GIẶT A3</div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    const galleryData = [
+        { title: "Ngày 26/3 - Ngày thành lập Đoàn", desc: "Hoạt động kỷ niệm ngày thành lập Đoàn TNCS Hồ Chí Minh." },
+        { title: "Cuộc thi Thanh niên Thời đại số", desc: "Tham gia cuộc thi với chủ đề 'Thanh niên trong thời đại số'." },
+        { title: "Lễ trưởng thành", desc: "Buổi lễ trưởng thành — bước ngoặt đánh dấu hành trình mới." },
+        { title: "Ôn thi tốt nghiệp", desc: "Những ngày tháng ôn thi đầy kỷ niệm và áp lực." },
+        { title: "Chia tay cuối cấp", desc: "Bữa tiệc chia tay cuối cấp đầy nước mắt và nụ cười." },
+        { title: "Ngày ra trường", desc: "Ngày cuối cùng bước chân qua cổng trường thân yêu." },
+        { title: "Họp lớp", desc: "Hẹn nhau ngày gặp lại — vì A3 mãi là gia đình." },
+        { title: "Kỷ niệm đặc biệt", desc: "Những khoảnh khắc không thể nào quên của lớp 12A3." },
+    ];
+
+    function renderGallery() {
+        const grid = document.getElementById('gallery-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        
+        galleryData.forEach((item, i) => {
+            const el = document.createElement('div');
+            el.className = 'gallery-item fade-in';
+            
+            const imgHTML = item.src 
+                ? `<img src="${item.src}" alt="${item.title}" loading="lazy">`
+                : `<div class="gallery-img-placeholder">📷<br>[IMG_${String(i+1).padStart(2,'0')}]<br>Thêm ảnh vào đây</div>`;
+            
+            el.innerHTML = `
+                <div class="gallery-img-wrapper">${imgHTML}</div>
+                <div class="gallery-caption">
+                    <h3>${item.title}</h3>
+                    <p>${item.desc}</p>
+                </div>
+            `;
+            grid.appendChild(el);
+        });
+
+        document.querySelectorAll('.gallery-item.fade-in').forEach(el => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            observer.observe(el);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', renderGallery);
+    </script>
+</body>
+</html>

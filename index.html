@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Website lớp 12A3 K41 - THPT Số 2 An Nhơn. Thanh niên thời đại số.">
+    <title>12A3 - Thanh Niên Thời Đại Số</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo-container">
+            <div class="logo" style="display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:0.8rem;color:var(--primary-cyan);">A3</div>
+            <span class="logo-text">12A3<span class="highlight">_K41</span></span>
+        </a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html" class="active">Trang chủ</a></li>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="members.html">Thành viên</a></li>
+            <li><a href="grade10.html">Lớp 10</a></li>
+            <li><a href="grade11.html">Lớp 11</a></li>
+            <li><a href="grade12.html">Lớp 12</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <header id="hero" class="section">
+        <div class="hero-content">
+            <div class="glitch" data-text="THANH NIÊN">THANH NIÊN</div>
+            <div class="glitch highlight" data-text="THỜI ĐẠI SỐ">THỜI ĐẠI SỐ</div>
+            <p class="subtitle">LỚP 12A3 • K41 • THPT SỐ 2 AN NHƠN</p>
+            <a href="about.html" class="cyber-btn">KHÁM PHÁ HỆ THỐNG</a>
+        </div>
+    </header>
+
+    <!-- STATS / HỒ SƠ TÓM TẮT -->
+    <section id="stats" class="section section-compact">
+        <h2 class="section-title">Hồ sơ <span class="highlight">hệ thống</span></h2>
+        <p class="section-desc">Dữ liệu tổng quan về đội ngũ 12A3.</p>
+        <div class="stats-grid">
+            <div class="stat-card fade-in">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number" data-count="45">0</div>
+                <div class="stat-label">Tổng sĩ số</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">👨‍💻</div>
+                <div class="stat-number" data-count="33">0</div>
+                <div class="stat-label">Nam (Developers)</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">👩‍💻</div>
+                <div class="stat-number" data-count="12">0</div>
+                <div class="stat-label">Nữ (Designers)</div>
+            </div>
+            <div class="stat-card gvcn-card fade-in">
+                <div class="stat-icon">👑</div>
+                <div class="stat-number teacher-name">Đào Mạnh Hồ</div>
+                <div class="stat-label">GVCN (Admin)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KHU VỰC LIÊN KẾT -->
+    <section id="explore" class="section section-compact">
+        <h2 class="section-title">Khu vực <span class="highlight">truy cập</span></h2>
+        <p class="section-desc">Chọn một khu vực để khám phá.</p>
+        <div class="links-grid">
+            <a href="about.html" class="link-card fade-in">
+                <span class="link-card-icon">📋</span>
+                <div class="link-card-title">Giới thiệu</div>
+                <div class="link-card-desc">Thông tin chi tiết về lớp 12A3 và thầy chủ nhiệm.</div>
+            </a>
+            <a href="members.html" class="link-card fade-in">
+                <span class="link-card-icon">🧑‍🤝‍🧑</span>
+                <div class="link-card-title">Thành viên</div>
+                <div class="link-card-desc">Danh sách 45 thành viên chia theo 4 Tổ.</div>
+            </a>
+            <a href="grade10.html" class="link-card fade-in">
+                <span class="link-card-icon">📸</span>
+                <div class="link-card-title">Kỷ niệm lớp 10</div>
+                <div class="link-card-desc">Gallery ảnh những khoảnh khắc năm đầu cấp 3.</div>
+            </a>
+            <a href="grade11.html" class="link-card fade-in">
+                <span class="link-card-icon">🎞️</span>
+                <div class="link-card-title">Kỷ niệm lớp 11</div>
+                <div class="link-card-desc">Những câu chuyện và kỉ niệm năm lớp 11.</div>
+            </a>
+            <a href="grade12.html" class="link-card fade-in">
+                <span class="link-card-icon">🎓</span>
+                <div class="link-card-title">Kỷ niệm lớp 12</div>
+                <div class="link-card-desc">Năm cuối cấp - những khoảnh khắc đáng nhớ nhất.</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- BẢNG BÌNH LUẬN CLOUD -->
+    <section id="messages" class="section section-compact">
+        <h2 class="section-title">Trạm <span class="highlight">phát tín hiệu</span></h2>
+        <p class="section-desc">
+            Bình luận đồng bộ thời gian thực — ai cũng thấy!
+            <span class="status-badge online" id="firebase-status">
+                <span class="status-dot"></span> Đang kết nối...
+            </span>
+        </p>
+
+        <div class="message-board-container">
+            <div class="message-form-container glass-panel">
+                <form id="message-form">
+                    <div class="input-group">
+                        <label for="sender-input">Bí danh</label>
+                        <input type="text" id="sender-input" placeholder="VD: Hacker Ẩn Danh" maxlength="30">
+                    </div>
+                    <div class="input-group">
+                        <label for="message-input">Thông điệp *</label>
+                        <textarea id="message-input" rows="4" placeholder="Nhập lời nhắn của bạn..." required maxlength="500"></textarea>
+                    </div>
+                    <button type="submit" class="cyber-btn small-btn" id="send-btn">PHÁT TÍN HIỆU</button>
+                </form>
+            </div>
+            <div class="messages-list-container">
+                <div id="messages-container">
+                    <div class="loading-spinner">Đang tải tín hiệu...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 - Lớp 12A3 K41 - THPT Số 2 An Nhơn</p>
+        <div class="footer-powered">POWERED BY BỘT GIẶT A3</div>
+    </footer>
+
+    <!-- Firebase SDK (compat v9) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
