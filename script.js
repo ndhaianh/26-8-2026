@@ -124,7 +124,7 @@ const fadeObserver = new IntersectionObserver((entries) => {
 fadeElements.forEach(el => fadeObserver.observe(el));
 
 // ==================== SCROLL PROGRESS BAR ====================
-(function() {
+(function () {
     const progressBar = document.createElement('div');
     progressBar.className = 'scroll-progress';
     document.body.prepend(progressBar);
@@ -145,7 +145,7 @@ fadeElements.forEach(el => fadeObserver.observe(el));
 })();
 
 // ==================== HERO PARALLAX ====================
-(function() {
+(function () {
     const heroContent = document.querySelector('#hero .hero-content') || document.querySelector('.about-hero .hero-content');
     if (!heroContent || window.innerWidth <= 768) return; // Skip parallax on mobile
 
@@ -429,6 +429,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     // Kiểm tra trạng thái lưu trước đó
     const savedState = localStorage.getItem('12a3-music-state');
     const shouldPlay = savedState !== 'off'; // Mặc định = bật
+
+    // Khôi phục thời gian phát nhạc để nhạc tiếp tục chạy đúng đoạn đang nghe khi chuyển trang
+    const savedTime = localStorage.getItem('12a3-music-time');
+    if (savedTime && !isNaN(savedTime)) {
+        bgMusic.currentTime = parseFloat(savedTime);
+    }
+
+    // Liên tục lưu lại thời gian phát nhạc vào localStorage
+    bgMusic.addEventListener('timeupdate', () => {
+        localStorage.setItem('12a3-music-time', bgMusic.currentTime);
+    });
 
     function updateBtn() {
         const onIcon = musicBtn.querySelector('.music-on');
